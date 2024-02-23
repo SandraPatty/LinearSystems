@@ -17,4 +17,17 @@ Dense Dense::operator+(const Dense& other) const {
             sum.push_back(other(i, j) + vector[i * col + j]);
         }
     }
+    return Dense(sum, row, col);
+}
+
+Dense Dense::operator*(const Dense& other) const {
+    std::vector<double> product(row * other.col);
+    for (unsigned int i = 0; i < row; i++) {
+        for (unsigned int j = 0; j < other.col; j++) {
+            for (unsigned int k = 0; k < col; k++) {
+                product[i * col + j] += (*this)(i, k) * other(k, j);
+            }
+        }
+    }
+    return Dense(product, row, other.col);
 }

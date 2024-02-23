@@ -9,6 +9,7 @@ class Dense {
 
         double operator()(unsigned int i, unsigned int j) const;
         Dense operator+(const Dense& other) const;
+        Dense operator*(const Dense& other) const;
 
     private:
         unsigned int row, col;
