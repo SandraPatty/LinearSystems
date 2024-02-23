@@ -1,7 +1,4 @@
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <span> 
+#include "function.hpp"
 
 void function(std::string name) {
     std::ifstream infile;
