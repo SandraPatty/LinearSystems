@@ -5,11 +5,15 @@ else ()
     set(HEADERS
         Dense.hpp
         CSR.hpp
+        householder.hpp
+        VecOps.hpp
         )
 
     set(SOURCES
         Dense.cpp
         CSR.cpp
+        householder.cpp
+        VecOps.cpp
         )
 
     source_group("Header Files" FILES ${HEADERS})
