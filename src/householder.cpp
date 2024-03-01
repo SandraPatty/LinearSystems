@@ -55,12 +55,12 @@ householder::householder(const Dense &A)
     }
 }
 
-Dense householder::getQ()
+Dense householder::getQ() const
 {
     return Q;
 }
 
-Dense householder::getR()
+Dense householder::getR() const
 {
     return R;
 }
@@ -71,4 +71,20 @@ std::vector<double> householder::theta(const std::vector<double> &x, const std::
     std::vector<double> res(n);
     res = x - v * (2 * (v * x) / (v * v));
     return res;
+}
+
+std::vector<double> householder::solveFor(const std::vector<double> &b) const
+{
+    std::vector<double> b1 = Q.trans() * b;
+    std::size_t n = b.size();
+    std::vector<double> x(n);
+    double sum;
+    for (int i = n - 1; i >= 0; i--) {
+        sum = 0;
+        for (unsigned j = n - 1; j > i; j--) {
+            sum += R(i, j) * x[j];
+        }
+        x[i] = (b1[i] - sum) / R(i, i); 
+    }
+    return x;
 }

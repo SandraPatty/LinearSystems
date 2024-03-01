@@ -49,7 +49,7 @@ bool Dense::operator==(const Dense& other) const {
     double precision = 1e-7;
     for (std::size_t i = 0; i < row; i++) {
         for (std::size_t j = 0; j < col; j++) {
-            if (((*this)(i, j) - other(i, j))*((*this)(i, j) - other(i, j)) > precision) {
+            if (fabs((*this)(i, j) - other(i, j)) > precision) {
                 return false;
             }       
         }
