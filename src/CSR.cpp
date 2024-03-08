@@ -17,7 +17,7 @@ double CSR::operator()(unsigned int i, unsigned int j) const {
     return 0;
 }
 
-std::vector<double> CSR::operator*(const std::vector<double>& v) {
+std::vector<double> CSR::operator*(const std::vector<double>& v) const {
     std::vector<double> res(v.size());
     for (int i = 0; i < v.size(); ++i) {
         for (int k = rows[i]; k < rows[i + 1]; ++k) {
@@ -27,31 +27,18 @@ std::vector<double> CSR::operator*(const std::vector<double>& v) {
     return res;
 }
 
-double CSR::operator*(const CSR& other) const {
-    double res = 0;
-    for (unsigned i = 1; i < rows.size(); i++) {
-        if ((rows[i] == rows[i - 1] + 1) && (other.rows[i] == other.rows[i - 1]) + 1) {
-            res += values[rows[i - 1]] * other.values[other.rows[i - 1]];
-        }
-    }
-    return res;
+size_t CSR::getRowsSize() const {
+    return rows.size();
 }
 
-  CSR CSR::operator+(const CSR& other) const {
+double CSR::_vals(std::size_t i) const {
+    return values[i];
+}
 
-        CSR result;
-        result.rows = this->rows;
-        for (unsigned int i = 1; i < rows.size(); i++) {
-            unsigned int n = (this->rows[i] - this->rows[i-1]);
-            unsigned int m = (other.rows[i] - other.rows[i-1]);
-            if(n || m) {
-                result.cols.push_back(0);
-                result.rows[i] = result.rows[i-1]+1;
-                result.values.push_back(values[this->rows[i - 1]] * n + other.values[other.rows[i - 1]] * m);             } 
-            else {
-                result.rows[i] = result.rows[i-1];
-            }
-        }
+unsigned int CSR::_cols(std::size_t i) const {
+    return cols[i];
+}
 
-        return result;
-    }
+unsigned int CSR::_rows(std::size_t i) const {
+    return rows[i];
+}

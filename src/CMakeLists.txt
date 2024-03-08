@@ -7,6 +7,7 @@ else ()
         CSR.hpp
         householder.hpp
         VecOps.hpp
+        SolveMethods.hpp
         )
 
     set(SOURCES
@@ -14,6 +15,7 @@ else ()
         CSR.cpp
         householder.cpp
         VecOps.cpp
+        SolveMethods.cpp
         )
 
     source_group("Header Files" FILES ${HEADERS})
