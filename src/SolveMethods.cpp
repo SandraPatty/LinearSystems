@@ -85,3 +85,46 @@ std::vector<double> inverseGS(const CSR& csr) {
 
     return res;
 }
+
+std::vector<double> Chebyshev(const CSR& A, const std::vector<double>& b, double lmin, double lmax, unsigned n, double stop) {
+    std::vector<double> x0(b.size()), x(b.size());
+    std::vector<double> ostatok = A * x - b;
+    std::vector<double> roots = ChebRoots(n);
+    std::vector<size_t> trans = ChebTrans(n);
+    while (stop < mod(ostatok)) { 
+        for (size_t i = 0; i < n; i++) {
+            double tau = 2 / (lmax + lmin + (lmax - lmin) * roots[trans[i]]);
+            x = x - ostatok * tau;
+            ostatok = A * x - b;
+        }
+    }
+    return x;
+}
+
+std::vector<double> ChebRoots(unsigned n) {
+    double sin1 = sin(M_PI / 2 / n);
+    double cos1 = cos(M_PI / 2 / n);
+    double sin2 = sin(M_PI / n);
+    double cos2 = cos(M_PI / n);
+    std::vector<double> roots(n);
+    double tmp = sin1;
+    roots[0] = cos2;
+    for (size_t i = 1; i < n; i++) {
+        roots[i] = roots[i - 1] * cos2 - tmp * sin2;
+        tmp = tmp * cos2 + roots[i - 1] * sin2;
+    }
+    return roots;
+}
+
+std::vector<size_t> ChebTrans(unsigned n) {
+    std::vector<size_t> trans(n);
+    unsigned lg = log2(n);
+    size_t tmp = n;
+    for (size_t i = 0; i < lg; i++) {
+        for (size_t j = 0; j < n; j += tmp) {
+            trans[j + tmp / 2] = n / (tmp / 2) - 1 - trans[j];
+        }
+        tmp = tmp / 2;
+    }
+    return trans;
+}

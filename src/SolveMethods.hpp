@@ -11,3 +11,7 @@ std::vector<double> GaussSeidelMethod(const CSR& A, const std::vector<double>& b
 std::vector<double> multiplyJ(const CSR& csr, const std::vector<double>& v);
 CSR inverseJ(const CSR& csr);
 std::vector<double> inverseGS(const CSR& csr);
+
+std::vector<double> Chebyshev(const CSR& A, const std::vector<double>& b, double lmin, double lmax, unsigned n, double stop);
+std::vector<double> ChebRoots(unsigned n);
+std::vector<size_t> ChebTrans(unsigned n);
