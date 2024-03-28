@@ -1,5 +1,49 @@
 #include "SolveMethods.hpp"
 
+std::vector<double> SteepDescent(const CSR& A, const std::vector<double>& b, double stop) {
+    std::vector<double> x0(b.size()), x(b.size());
+    std::vector<double> r = A * x0 - b;
+    while (stop < mod(r)) { 
+        double tau = (r * r) / (r * (A * r));
+        x = x - r * tau;
+        r = A * x - b;  
+    }
+    return x;    
+
+}
+std::vector<double> SymmetryGZ(const CSR& A, const std::vector<double>& b, double stop) {
+    std::vector<double> x0(b.size()), x(b.size());
+    std::vector<double> d = inverseGS(A);
+    std::vector<double> r = A * x - b;
+    double tmp;
+    while (stop < mod(r)) {
+        for (unsigned i = 0; i < x.size(); i++) {
+            tmp = 0;
+            for (unsigned j = A._rows(i); j < A._rows(i + 1); j++) {
+                if (i != A._cols(j)) {
+                    tmp += A._vals(j) * x[A._cols(j)];
+                }
+            }
+            x[i] = d[i] * (b[i] - tmp);
+        }
+
+        for (unsigned i = x.size() - 1; (i + 1) > 0; i--) {
+            tmp = 0;
+            for (unsigned j = A._rows(i); j < A._rows(i + 1); j++) {
+                if (i != A._cols(j)) {
+                    tmp += A._vals(j) * x[A._cols(j)];
+                }
+            }
+            x[i] = d[i] * (b[i] - tmp);
+        }
+
+        r = A * x - b;
+    }
+    return x;
+
+}
+
+
 std::vector<double> MPIMethod(const CSR& A, const std::vector<double>& b, double tau, double stop) {
     std::vector<double> x0(b.size()), x(b.size());
     std::vector<double> ostatok = A * x0 - b;
