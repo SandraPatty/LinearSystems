@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Dense.hpp"
+#include "Tools.hpp"
 #include "CSR.hpp"
 #include "VecOps.hpp"
 
@@ -9,6 +10,7 @@ std::vector<double> JacobiMethod(const CSR& A, const std::vector<double>& b, dou
 std::vector<double> GaussSeidelMethod(const CSR& A, const std::vector<double>& b, double stop);
 std::vector<double> SteepDescent(const CSR& A, const std::vector<double>& b, double stop);
 std::vector<double> SymmetryGZ(const CSR& A, const std::vector<double>& b, double stop);
+std::vector<double> AccelGZ(const CSR& A, const std::vector<double>& b, double stop);
 
 std::vector<double> multiplyJ(const CSR& csr, const std::vector<double>& v);
 CSR inverseJ(const CSR& csr);

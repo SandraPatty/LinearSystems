@@ -26,6 +26,7 @@ int main() {
     std::ofstream file1("../test/1.txt", std::ios::out);
     std::ofstream file2("../test/2.txt", std::ios::out);
     std::ofstream file3("../test/3.txt", std::ios::out);
+    std::ofstream file4("../test/4.txt", std::ios::out);
 
     for (unsigned n = 0; n <= 500; n += 10) {
         A = DiagDom(n);
@@ -51,6 +52,12 @@ int main() {
         end = std::chrono::high_resolution_clock::now();
         nsec = end - start;
         file3 << n << ' ' << nsec.count() << std::endl;
+
+        start = std::chrono::high_resolution_clock::now(); 
+        x_calc = AccelGZ(A, b, 1e-7);
+        end = std::chrono::high_resolution_clock::now();
+        nsec = end - start;
+        file4 << n << ' ' << nsec.count() << std::endl;
     }
 
     return 0;

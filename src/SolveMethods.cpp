@@ -1,5 +1,23 @@
 #include "SolveMethods.hpp"
 
+std::vector<double> AccelGZ(const CSR& A, const std::vector<double>& b, double stop) {
+    std::vector<double> x0(b.size()), y0 = x0, y1 = GZs(A, b, y0), y, tmp;
+    std::vector<double> d = inverseGS(A);
+    std::vector<double> r = A * y1 - b;
+    double p = 0.5, u0 = 1, u1 = 1/p, u;
+    while (stop < mod(r)) {
+        u = 2*u1/p - u0;
+        tmp = GZs(A, b, y1);
+        y = tmp*(2*u1/(p*u)) - y0*(u0/u);
+        y0 = y1;
+        y1 = y;
+        u0 = u1;
+        u1 = u;
+        r = A * y - b;
+    }
+    return y;
+}
+
 std::vector<double> SteepDescent(const CSR& A, const std::vector<double>& b, double stop) {
     std::vector<double> x0(b.size()), x(b.size());
     std::vector<double> r = A * x0 - b;
@@ -115,20 +133,6 @@ CSR inverseJ(const CSR& csr) {
     return CSR(vals, cols, rows);
 }
 
-std::vector<double> inverseGS(const CSR& csr) {
-    unsigned n = csr.getRowsSize() - 1;
-    std::vector<double> res(n);
-
-    for (unsigned i = 0; i < n; i++) {
-        for (unsigned j = csr._rows(i); j < csr._rows(i + 1); j++) {
-            if (i == csr._cols(j)) {
-                res[i] = 1 / csr._vals(j);
-            }
-        }
-    }
-
-    return res;
-}
 
 std::vector<double> Chebyshev(const CSR& A, const std::vector<double>& b, double lmin, double lmax, unsigned n, double stop) {
     std::vector<double> x0(b.size()), x(b.size());
