@@ -27,8 +27,11 @@ int main() {
     std::ofstream file2("../test/2.txt", std::ios::out);
     std::ofstream file3("../test/3.txt", std::ios::out);
     std::ofstream file4("../test/4.txt", std::ios::out);
+    std::ofstream file5("../test/5.txt", std::ios::out);
+    std::ofstream file6("../test/6.txt", std::ios::out);
+    std::ofstream file7("../test/7.txt", std::ios::out);
 
-    for (unsigned n = 0; n <= 500; n += 10) {
+    for (unsigned n = 0; n <= 500; n += 15) {
         A = DiagDom(n);
         std::vector<double> x_real(n, 1);
         b = A * x_real;
@@ -58,6 +61,25 @@ int main() {
         end = std::chrono::high_resolution_clock::now();
         nsec = end - start;
         file4 << n << ' ' << nsec.count() << std::endl;
+
+        start = std::chrono::high_resolution_clock::now(); 
+        x_calc = SymmetryGZ(A, b, 1e-7);
+        end = std::chrono::high_resolution_clock::now();
+        nsec = end - start;
+        file5 << n << ' ' << nsec.count() << std::endl;
+
+        start = std::chrono::high_resolution_clock::now(); 
+        x_calc = SteepDescent(A, b, 1e-7);
+        end = std::chrono::high_resolution_clock::now();
+        nsec = end - start;
+        file6 << n << ' ' << nsec.count() << std::endl;
+
+        start = std::chrono::high_resolution_clock::now(); 
+        x_calc = Chebyshev(A, b, 2, 5, 8, 1e-7);
+        end = std::chrono::high_resolution_clock::now();
+        nsec = end - start;
+        file7 << n << ' ' << nsec.count() << std::endl;
+
     }
 
     return 0;
