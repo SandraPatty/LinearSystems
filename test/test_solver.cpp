@@ -59,3 +59,11 @@ TEST(AccelGZ, main) {
     x_calc = AccelGZ(A, b, 1e-7);
     EXPECT_TRUE(x_calc == x_real);
 }
+
+TEST(ConjGradient, main) {
+    CSR A = CSR({2, -1, -1, 2, -1, -1, 2}, {0, 1, 0, 1, 2, 1, 2}, {0, 2, 5, 7});
+	std::vector<double> x_real = {1, 1, 1}, x_calc;
+    std::vector<double> b = A * x_real;
+    x_calc = ConjGrad(A, b, 1e-7);
+    EXPECT_TRUE(x_calc == x_real);
+}

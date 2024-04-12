@@ -18,6 +18,27 @@ std::vector<double> AccelGZ(const CSR& A, const std::vector<double>& b, double s
     return y;
 }
 
+std::vector<double> ConjGrad(const CSR& A, const std::vector<double>& b, double stop) {
+    std::vector<double> x0(b.size()), x(b.size());
+    std::vector<double> r0 = A * x0 - b, r, d = r0;
+    bool G0 = (mod(r0) != 0);
+    while (G0) { 
+        double tau = (r * r) / (d * (A * d));
+        x = x - d * tau;
+        r0 = r;
+        r = A * x - b; 
+        if (mod(r)==0) {
+            G0 = false;
+        } 
+        else {
+            double beta = (r * r) / (r0 * r0);
+            d = r + d * beta;
+            G0 = (mod(r) > stop);
+        }
+    }
+    return x;        
+}
+
 std::vector<double> SteepDescent(const CSR& A, const std::vector<double>& b, double stop) {
     std::vector<double> x0(b.size()), x(b.size());
     std::vector<double> r = A * x0 - b;

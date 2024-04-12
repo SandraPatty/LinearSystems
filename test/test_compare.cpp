@@ -30,6 +30,7 @@ int main() {
     std::ofstream file5("../test/5.txt", std::ios::out);
     std::ofstream file6("../test/6.txt", std::ios::out);
     std::ofstream file7("../test/7.txt", std::ios::out);
+    std::ofstream file8("../test/7.txt", std::ios::out);
 
     for (unsigned n = 0; n <= 500; n += 15) {
         A = DiagDom(n);
@@ -79,6 +80,12 @@ int main() {
         end = std::chrono::high_resolution_clock::now();
         nsec = end - start;
         file7 << n << ' ' << nsec.count() << std::endl;
+
+        start = std::chrono::high_resolution_clock::now(); 
+        x_calc = ConjGrad(A, b, 1e-7);
+        end = std::chrono::high_resolution_clock::now();
+        nsec = end - start;
+        file8 << n << ' ' << nsec.count() << std::endl;
 
     }
 
