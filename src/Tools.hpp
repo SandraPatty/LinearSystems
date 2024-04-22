@@ -9,3 +9,5 @@
 std::vector<double> GZs(const CSR& A, const std::vector<double>& b, const std::vector<double>& _x);
 
 std::vector<double> inverseGS(const CSR& csr);
+
+Dense givens(const std::vector<double>& vec, unsigned int pos);

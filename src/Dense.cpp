@@ -12,6 +12,11 @@ double Dense::operator()(unsigned int i, unsigned int j) const {
     return vector[i * col + j];
 }
 
+double& Dense::at(unsigned int i, unsigned int j) {
+    return vector[i * col + j];
+}
+
+
 Dense Dense::operator+(const Dense& other) const {
     std::vector<double> sum;
     for (unsigned int i = 0; i < row; i++) {
@@ -57,7 +62,6 @@ bool Dense::operator==(const Dense& other) const {
     return true;
 }
 
-
 Dense Dense::trans() const {
     std::vector<double> Datanew(row *col);
     for (unsigned i = 0; i < row; i++) {
@@ -78,4 +82,22 @@ std::size_t Dense::getRows() const {
 
 std::size_t Dense::getCols() const {
     return col;
+}
+
+Dense Dense::change_size(unsigned int new_row, unsigned int new_col) const {
+    std::vector<double> new_matrix(new_row * new_col);
+    for (size_t i = 0; i < new_row; ++i) {
+        for (size_t j = 0; j < new_col; ++j) {
+            new_matrix[new_row * i + j] = (*this)(i, j);
+        }
+    }
+    return Dense(new_matrix, new_row, new_col);
+}
+
+std::vector<double> Dense::get_column(unsigned int pos) const {
+    std::vector<double> res(row);
+    for (size_t i = 0; i < row; i++) {
+        res[i] = (*this)(i, pos);
+    }
+    return res;
 }
